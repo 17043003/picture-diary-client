@@ -1,8 +1,8 @@
-import type { NextPage } from 'next'
-import Head from 'next/head'
-import Image from 'next/image'
-import Link from 'next/link'
-import styles from '../styles/Home.module.css'
+import type { NextPage } from "next";
+import Head from "next/head";
+import Image from "next/image";
+import Link from "next/link";
+import styles from "../styles/Home.module.css";
 
 const Home: NextPage = () => {
   return (
@@ -14,21 +14,17 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to 絵日記
-        </h1>
+        <h1 className={styles.title}>Welcome to 絵日記</h1>
         <Link href="/post/new">
-        <a className={styles.card}>
-          <h2>日記を書く &rarr;</h2>
-        </a>
+          <a className={styles.card}>
+            <h2>日記を書く &rarr;</h2>
+          </a>
         </Link>
       </main>
 
-      <footer className={styles.footer}>
-        
-      </footer>
+      <footer className={styles.footer}></footer>
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
