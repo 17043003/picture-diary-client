@@ -1,6 +1,7 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
+import Link from 'next/link'
 import styles from '../styles/Home.module.css'
 
 const Home: NextPage = () => {
@@ -16,9 +17,11 @@ const Home: NextPage = () => {
         <h1 className={styles.title}>
           Welcome to 絵日記
         </h1>
-        <a href="https://nextjs.org/docs" className={styles.card}>
+        <Link href="/post/new">
+        <a className={styles.card}>
           <h2>日記を書く &rarr;</h2>
         </a>
+        </Link>
       </main>
 
       <footer className={styles.footer}>
