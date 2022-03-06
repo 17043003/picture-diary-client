@@ -9,8 +9,8 @@ const headers = {
 export const getFetcher = async (url: RequestInfo) => {
   const res = await fetch(baseUrl + url, {
     method: 'GET',
-  }).then((r) => r.json());
-  return res;
+  });
+  return res.json();
 };
 
 export const postFetcher = async (url: RequestInfo, body: BodyInit) => {
