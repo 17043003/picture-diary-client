@@ -1,14 +1,9 @@
 import type { NextPage } from 'next';
 import Image from 'next/image';
+import Link from 'next/link';
 import { getFetcher } from '../../util/fetcher';
 import { useState, useEffect } from 'react';
-
-type Post = {
-  id: number;
-  title: String;
-  body: String;
-  imageUrl: String;
-};
+import { Post } from '../../util/post'
 
 const IndexPostPage: NextPage = () => {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -19,12 +14,16 @@ const IndexPostPage: NextPage = () => {
   const postElements = posts?.map((post) => {
     return (
       <div key={post.id}>
-        <div className='container'>
-          <div className='image'></div>
-          <Image src='/images/avatar.png' width={64} height={64} alt='Post thumbnail' />
-          <div className='title'>{post.title}</div>
-          <div className='body_summary'>{post.body}</div>
-        </div>
+        <Link href='/post/[id]' as={`/post/${post.id}`} passHref>
+          <a>
+            <div className='container'>
+              <div className='image'></div>
+              <Image src='/images/avatar.png' width={64} height={64} alt='Post thumbnail' />
+              <div className='title'>{post.title}</div>
+              <div className='body_summary'>{post.body}</div>
+            </div>
+          </a>
+        </Link>
       </div>
     );
   });
