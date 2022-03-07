@@ -3,7 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { getFetcher } from '../../util/fetcher';
 import { useState, useEffect } from 'react';
-import { Post } from '../../util/post'
+import { Post } from '../../util/post';
 
 const IndexPostPage: NextPage = () => {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -26,7 +26,7 @@ const IndexPostPage: NextPage = () => {
         </Link>
       </div>
     );
-  });
+  }) ?? <div></div>;
 
   return <div>{postElements}</div>;
 };
