@@ -51,3 +51,30 @@ export const uploadImage = (files: FileList): string | null => {
   });
   return fileKey;
 };
+
+export const downloadImage = async (fileKey: string) => {
+  const region = process.env.NEXT_PUBLIC_REGION ?? '';
+  const bucket = new S3({
+    accessKeyId: process.env.NEXT_PUBLIC_ACCESS_KEY,
+    secretAccessKey: process.env.NEXT_PUBLIC_SECRET_KEY,
+    region,
+  });
+
+  const bucketName = process.env.NEXT_PUBLIC_BUCKET_NAME ?? '';
+  const param = {
+    Bucket: bucketName,
+    Key: fileKey,
+  };
+
+  const result = await bucket
+    .getObject(param, (err: Error, data: S3.GetObjectOutput) => {
+      if (err) {
+        console.error(err);
+      } else {
+        console.log('Successfully downloaded file.', data);
+      }
+    })
+    .promise();
+  if (result == null) return;
+  return result.Body;
+};
