@@ -16,7 +16,7 @@ const DetailPostPage: NextPage = ({ post, uri }: { post: Post; uri: string }) =>
 export async function getServerSideProps(context: any) {
   const { id } = context.query;
   const post: Post = await getFetcher(`/api/post/${id}`);
-  if(post.imageUrls[0] === null) return { props: { post, uri: '' } };
+  if (post.imageUrls[0] === null) return { props: { post, uri: '' } };
 
   const image = (await downloadImage(post.imageUrls[0])) ?? null;
   const uri = blobToURI(image);
