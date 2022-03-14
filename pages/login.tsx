@@ -1,14 +1,26 @@
 import type { NextPage } from 'next';
 import { useState } from 'react';
-import { postFetcher } from '../util/fetcher';
+import { setCookie } from 'nookies';
 
 const Login: NextPage = () => {
   const [email, setEmail] = useState('');
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const requestBody: BodyInit = `email=${encodeURI(email)}`;
-    const jwt = await postFetcher('/login', requestBody).catch(() => null);
-    alert(jwt?.token);
+    const body: BodyInit = `email=${encodeURI(email)}`;
+    const headers = {
+      Accept: 'application/x-www-form-urlencoded',
+      'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+    };
+    const jwt = await fetch('http://localhost:3001/api/login', {
+      method: 'POST',
+      headers,
+      body,
+    }).then((v) => v.json());
+
+    setCookie(null, 'token', jwt?.token, {
+      maxAge: 30 * 24 * 60 * 60,
+      path: '/',
+    });
   };
   const changeEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
