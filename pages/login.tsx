@@ -1,9 +1,11 @@
 import type { NextPage } from 'next';
 import { useState } from 'react';
 import { setCookie } from 'nookies';
+import { useRouter } from 'next/router';
 
 const Login: NextPage = () => {
   const [email, setEmail] = useState('');
+  const router = useRouter();
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const body: BodyInit = `email=${encodeURI(email)}`;
@@ -21,6 +23,11 @@ const Login: NextPage = () => {
       maxAge: 30 * 24 * 60 * 60,
       path: '/',
     });
+
+    if(jwt){
+        router.push("/user/mypage");
+    }
+
   };
   const changeEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
