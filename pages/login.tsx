@@ -24,10 +24,9 @@ const Login: NextPage = () => {
       path: '/',
     });
 
-    if(jwt){
-        router.push("/user/mypage");
+    if (jwt) {
+      router.push('/user/mypage');
     }
-
   };
   const changeEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);

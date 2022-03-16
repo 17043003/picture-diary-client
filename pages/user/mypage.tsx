@@ -1,7 +1,7 @@
 import type { NextPage } from 'next';
-import { GetServerSideProps } from 'next'
+import { GetServerSideProps } from 'next';
 import { User } from '../../util/user';
-import axios from "axios";
+import axios from 'axios';
 
 const MyPage: NextPage = ({ user }: { user: User }) => {
   return (
@@ -19,12 +19,21 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   };
   const baseUrl: RequestInfo = process.env.BASEURL ?? 'http://localhost:8080';
 
-  const user = await axios.get(`${baseUrl}/api/user`, {
-    headers
-  }).then(v => v.data)
-  .catch(null)
-  
-  return { props: { user } };
-}
+  const user = await axios
+    .get(`${baseUrl}/api/user`, {
+      headers,
+    })
+    .then((v) => v.data)
+    .catch((e) => null);
+
+  return user
+    ? { props: { user } }
+    : {
+        redirect: {
+          permanent: false,
+          destination: '/login',
+        },
+      };
+};
 
 export default MyPage;
