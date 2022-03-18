@@ -1,5 +1,4 @@
 import type { NextPage } from 'next';
-import useSWR from 'swr';
 import { useState } from 'react';
 import { postFetcher, uploadImage } from '../../util/fetcher';
 
@@ -14,24 +13,29 @@ const NewPostPage: NextPage = () => {
   const handleChangeBody = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setBody(e.target.value);
   };
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const requestBody: BodyInit = `title=${encodeURIComponent(title)}&body=${encodeURIComponent(
+    let requestBody: BodyInit = `title=${encodeURIComponent(title)}&body=${encodeURIComponent(
       body,
     )}`;
 
     // upload image
     let imageLocation: string | null = null;
-    if (!images) return;
-    if (images.length !== 0) {
-      imageLocation = uploadImage(images);
+    if (images) {
+      if (images.length !== 0) {
+        imageLocation = uploadImage(images);
+      }
     }
 
-    if (imageLocation !== null) {
-      postFetcher('/api/post', requestBody + `&imageUrl=${encodeURIComponent(imageLocation)}`);
-    } else {
-      postFetcher('/api/post', requestBody);
+    if (imageLocation) {
+      requestBody += `&imageUrl=${encodeURIComponent(imageLocation)}`;
     }
+    const data = await fetch(process.env.NEXT_PUBLIC_FRONT_BASEURL + '/api/post', {
+      method: 'POST',
+      body: requestBody,
+    }).then((v) => v.json());
+    if (data.status == '200') alert('日記を保存しました');
+    else alert('日記の保存に失敗しました');
   };
 
   const handleFile = (event: React.FormEvent<HTMLInputElement>) => {
