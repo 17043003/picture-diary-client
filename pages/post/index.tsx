@@ -1,16 +1,11 @@
 import type { NextPage } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
-import { getFetcher } from '../../util/fetcher';
-import { useState, useEffect } from 'react';
 import { Post } from '../../util/post';
+import CheckAuth from '../../util/checkAuth';
+import { GetServerSidePropsContext } from 'next';
 
-const IndexPostPage: NextPage = () => {
-  const [posts, setPosts] = useState<Post[]>([]);
-  useEffect(() => {
-    getFetcher('/api/post').then((data) => setPosts(data));
-  }, []);
-
+const IndexPostPage: NextPage = ({posts}: {posts: Post[]}) => {
   const postElements = posts?.map((post) => {
     return (
       <div key={post.id}>
@@ -26,9 +21,23 @@ const IndexPostPage: NextPage = () => {
         </Link>
       </div>
     );
-  }) ?? <div></div>;
+    }) ?? <div>記事がありません</div>;
 
   return <div>{postElements}</div>;
 };
 
+const getServerSideProps = CheckAuth(async (ctx: GetServerSidePropsContext) => {
+    const url = ctx.req.url + "/api/post";
+    const headers = {
+        authorization: ctx.req.headers.authorization,
+        accept: ctx.req.headers.accept,
+    } as HeadersInit;
+    const posts = await fetch(url, {
+        headers
+    }).then(v => v.json())
+    
+    return { props: { posts }}
+})
+
 export default IndexPostPage;
+export {getServerSideProps};
