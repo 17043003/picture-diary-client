@@ -1,6 +1,5 @@
 import type { NextPage } from 'next';
 import { useState } from 'react';
-import { postFetcher, uploadImage } from '../../util/fetcher';
 
 const NewPostPage: NextPage = () => {
   const [title, setTitle] = useState('');
@@ -20,21 +19,35 @@ const NewPostPage: NextPage = () => {
     )}`;
 
     // upload image
-    let imageLocation: string | null = null;
+    let Key: string | null = null;
     if (images) {
       if (images.length !== 0) {
-        imageLocation = uploadImage(images);
+        const headers = {
+            Accept: 'application/json',
+            'Content-Type': 'image/jpeg',
+            'Key-Name': images[0].name,
+        }
+        
+        const response = await fetch(process.env.NEXT_PUBLIC_FRONT_BASEURL + '/api/image', {
+          method: 'POST',
+          body: images[0],
+          headers
+        }).then(v => v.json())
+        .catch(() => null);
+        alert(response.Key);
+        Key = response.Key;
       }
     }
 
-    if (imageLocation) {
-      requestBody += `&imageUrl=${encodeURIComponent(imageLocation)}`;
+    if (Key) {
+      requestBody += `&imageUrl=${encodeURIComponent(Key)}`;
     }
     const data = await fetch(process.env.NEXT_PUBLIC_FRONT_BASEURL + '/api/post', {
       method: 'POST',
       body: requestBody,
-    }).then((v) => v.json());
-    if (data.status == '200') alert('日記を保存しました');
+    }).then((v) => v.json())
+    .catch(() => null);
+    if (data?.status === '200') alert('日記を保存しました');
     else alert('日記の保存に失敗しました');
   };
 
