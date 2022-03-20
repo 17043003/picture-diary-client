@@ -23,22 +23,21 @@ export const postFetcher = async (url: RequestInfo, body: BodyInit) => {
   return res.json();
 };
 
-export const uploadImage = (files: FileList): string | null => {
+export const uploadImage = (file: File, fileKey: string): string | null => {
   aws.config.logger = console;
 
-  const region = process.env.NEXT_PUBLIC_REGION ?? '';
+  const region = process.env.REGION ?? '';
   const bucket = new S3({
-    accessKeyId: process.env.NEXT_PUBLIC_ACCESS_KEY,
-    secretAccessKey: process.env.NEXT_PUBLIC_SECRET_KEY,
+    accessKeyId: process.env.ACCESS_KEY,
+    secretAccessKey: process.env.SECRET_KEY,
     region,
   });
 
-  const bucketName = process.env.NEXT_PUBLIC_BUCKET_NAME ?? '';
-  const fileKey = files[0].name;
+  const bucketName = process.env.BUCKET_NAME ?? '';
   const param: S3.Types.PutObjectRequest = {
     Bucket: bucketName,
     Key: fileKey,
-    Body: files[0],
+    Body: file,
     ContentType: 'image/jpeg',
   };
 
@@ -53,14 +52,14 @@ export const uploadImage = (files: FileList): string | null => {
 };
 
 export const downloadImage = async (fileKey: string) => {
-  const region = process.env.NEXT_PUBLIC_REGION ?? '';
+  const region = process.env.REGION ?? '';
   const bucket = new S3({
-    accessKeyId: process.env.NEXT_PUBLIC_ACCESS_KEY,
-    secretAccessKey: process.env.NEXT_PUBLIC_SECRET_KEY,
+    accessKeyId: process.env.ACCESS_KEY,
+    secretAccessKey: process.env.SECRET_KEY,
     region,
   });
 
-  const bucketName = process.env.NEXT_PUBLIC_BUCKET_NAME ?? '';
+  const bucketName = process.env.BUCKET_NAME ?? '';
   const param = {
     Bucket: bucketName,
     Key: fileKey,
@@ -74,7 +73,9 @@ export const downloadImage = async (fileKey: string) => {
         console.log('Successfully downloaded file.', data);
       }
     })
-    .promise();
+    .promise()
+    .then(v => v.Body)
+    .catch(() => null)
   if (result == null) return;
-  return result.Body;
+  return result;
 };
