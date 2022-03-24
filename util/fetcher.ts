@@ -74,8 +74,8 @@ export const downloadImage = async (fileKey: string) => {
       }
     })
     .promise()
-    .then(v => v.Body)
-    .catch(() => null)
+    .then((v) => v.Body)
+    .catch(() => null);
   if (result == null) return;
   return result;
 };

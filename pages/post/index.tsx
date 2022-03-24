@@ -5,7 +5,7 @@ import { Post } from '../../util/post';
 import CheckAuth from '../../util/checkAuth';
 import { GetServerSidePropsContext } from 'next';
 
-const IndexPostPage: NextPage = ({posts}: {posts: Post[]}) => {
+const IndexPostPage: NextPage = ({ posts }: { posts: Post[] }) => {
   const postElements = posts?.map((post) => {
     return (
       <div key={post.id}>
@@ -21,23 +21,23 @@ const IndexPostPage: NextPage = ({posts}: {posts: Post[]}) => {
         </Link>
       </div>
     );
-    }) ?? <div>記事がありません</div>;
+  }) ?? <div>記事がありません</div>;
 
   return <div>{postElements}</div>;
 };
 
 const getServerSideProps = CheckAuth(async (ctx: GetServerSidePropsContext) => {
-    const url = ctx.req.url + "/api/post";
-    const headers = {
-        authorization: ctx.req.headers.authorization,
-        accept: ctx.req.headers.accept,
-    } as HeadersInit;
-    const posts = await fetch(url, {
-        headers
-    }).then(v => v.json())
-    
-    return { props: { posts }}
-})
+  const url = ctx.req.url + '/api/post';
+  const headers = {
+    authorization: ctx.req.headers.authorization,
+    accept: ctx.req.headers.accept,
+  } as HeadersInit;
+  const posts = await fetch(url, {
+    headers,
+  }).then((v) => v.json());
+
+  return { props: { posts } };
+});
 
 export default IndexPostPage;
-export {getServerSideProps};
+export { getServerSideProps };

@@ -35,14 +35,13 @@ const NewPostPage: NextPage = () => {
           method: 'POST',
           body: base64,
           headers,
-        })
-          .then((v) => v.json())
-          .catch(() => null);
-        if (response === null) {
+        });
+        if (response.status !== 200) {
           alert('画像の保存に失敗しました');
+          alert((await response?.json()).error);
           return;
         }
-        Key = response?.Key;
+        Key = await response?.json();
         alert(Key);
       }
     }
