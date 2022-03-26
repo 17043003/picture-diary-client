@@ -1,6 +1,6 @@
 const blobToURI = (image: Blob): string => {
   const buffer = Buffer.from(image);
-  const header = buffer.slice(0).reduce((prev, now) => prev + now.toString(16), '');
+  const header = buffer.slice(0, 8).reduce((prev, now) => prev + now.toString(16), '');
   const mime = getMimeFromBinaryHeader(header);
 
   const base64 = buffer.toString('base64');
