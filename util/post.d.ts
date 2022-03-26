@@ -3,4 +3,6 @@ export type Post = {
   title: string;
   body: string;
   imageUrls: string[];
+  created: Date;
+  updated: Date;
 };
