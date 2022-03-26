@@ -34,8 +34,9 @@ const getServerSideProps = CheckAuth(async (ctx: GetServerSidePropsContext) => {
   } as HeadersInit;
   const posts = await fetch(url, {
     headers,
-  }).then((v) => v.json())
-  .catch(() => null)
+  })
+    .then((v) => v.json())
+    .catch(() => null);
 
   return { props: { posts } };
 });

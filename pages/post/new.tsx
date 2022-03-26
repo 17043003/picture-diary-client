@@ -41,7 +41,7 @@ const NewPostPage: NextPage = () => {
           alert((await response?.json()).error);
           return;
         }
-        Key = await response?.json();
+        Key = (await response?.json())?.Key;
         alert(Key);
       }
     }
