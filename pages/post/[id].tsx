@@ -47,9 +47,10 @@ const getServerSideProps = CheckAuth(async (ctx: GetServerSidePropsContext) => {
 
   // format date
   const toStringDate = (date: Date): string => {
-    return `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()} ${
-      date.getHours() + 9
-    }:${date.getMinutes()}:${date.getSeconds()}`;
+    const jpDate = new Date(date.valueOf() + 540 * 60 * 1000);
+    return `${jpDate.getFullYear()}/${
+      jpDate.getMonth() + 1
+    }/${jpDate.getDate()} ${jpDate.getHours()}:${jpDate.getMinutes()}:${jpDate.getSeconds()}`;
   };
   const created = toStringDate(new Date(post.created));
   const updated = toStringDate(new Date(post.updated));
