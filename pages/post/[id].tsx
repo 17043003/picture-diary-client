@@ -39,21 +39,25 @@ const getServerSideProps = CheckAuth(async (ctx: GetServerSidePropsContext) => {
   })
     .then((v) => v.json())
     .catch(() => null);
-  if (post?.imageUrls[0] == null) return { props: { post, uri: '' } };
 
-  const image = (await downloadImage(post.imageUrls[0])) ?? null;
-  if (image === null) return { props: { post: null, uri: null } };
-  const uri = blobToURI(image);
-
-  // format date
+    // format date
   const toStringDate = (date: Date): string => {
     const jpDate = new Date(date.valueOf() + 540 * 60 * 1000);
     return `${jpDate.getFullYear()}/${
       jpDate.getMonth() + 1
     }/${jpDate.getDate()} ${jpDate.getHours()}:${jpDate.getMinutes()}:${jpDate.getSeconds()}`;
   };
+
+  if(post == null) return { props: { post: null } };
+
   const created = toStringDate(new Date(post.created));
   const updated = toStringDate(new Date(post.updated));
+
+  if (post.imageUrls[0] == null) return { props: { post, uri: '', created, updated } };
+
+  const image = (await downloadImage(post.imageUrls[0])) ?? null;
+  if (image === null) return { props: { post, uri: '', created, updated } };
+  const uri = blobToURI(image);
 
   return { props: { post, uri, created, updated } };
 });
