@@ -27,7 +27,18 @@ const IndexPostPage: NextPage = ({ posts }: { posts: Post[] }) => {
     );
   }) ?? <div>記事がありません</div>;
 
-  return <div>{postElements}</div>;
+  return (
+    <div>
+      <div className='mx-2 mt-6'>
+        <Link href='/post/new'>
+          <a className='text-2xl font-bold text-violet-700 bg-lime-200 rounded-lg p-2 hover:bg-lime-400'>
+            日記作成
+          </a>
+        </Link>
+      </div>
+      {postElements}
+    </div>
+  );
 };
 
 const getServerSideProps = CheckAuth(async (ctx: GetServerSidePropsContext) => {

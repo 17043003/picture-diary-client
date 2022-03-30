@@ -40,7 +40,7 @@ const getServerSideProps = CheckAuth(async (ctx: GetServerSidePropsContext) => {
     .then((v) => v.json())
     .catch(() => null);
 
-    // format date
+  // format date
   const toStringDate = (date: Date): string => {
     const jpDate = new Date(date.valueOf() + 540 * 60 * 1000);
     return `${jpDate.getFullYear()}/${
@@ -48,7 +48,7 @@ const getServerSideProps = CheckAuth(async (ctx: GetServerSidePropsContext) => {
     }/${jpDate.getDate()} ${jpDate.getHours()}:${jpDate.getMinutes()}:${jpDate.getSeconds()}`;
   };
 
-  if(post == null) return { props: { post: null } };
+  if (post == null) return { props: { post: null } };
 
   const created = toStringDate(new Date(post.created));
   const updated = toStringDate(new Date(post.updated));
