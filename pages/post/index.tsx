@@ -1,23 +1,27 @@
-import type { NextPage } from 'next';
+import type { NextPage, GetServerSidePropsContext } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Post } from '../../util/post';
 import CheckAuth from '../../util/checkAuth';
-import { GetServerSidePropsContext } from 'next';
 
 const IndexPostPage: NextPage = ({ posts }: { posts: Post[] }) => {
   const postElements = posts?.map((post) => {
     return (
       <div key={post.id}>
         <Link href='/post/[id]' as={`/post/${post.id}`} passHref>
-          <a>
-            <div className='container'>
-              <div className='image'></div>
-              <Image src='/images/avatar.png' width={64} height={64} alt='Post thumbnail' />
-              <div className='title'>{post.title}</div>
-              <div className='body_summary'>{post.body}</div>
-            </div>
-          </a>
+          <div className='max-w-sm rounded overflow-hidden shadow-lg m-4 bg-gray-200'>
+            <a className='cursor-pointer'>
+              <Image
+                src='/noimage.png'
+                width={64}
+                height={64}
+                alt='Post thumbnail'
+                className='w-full'
+              />
+              <div className='font-bold text-xl ml-4 mb-2'>{post.title}</div>
+              <div className='text-base ml-6 mb-2'>{post.body}</div>
+            </a>
+          </div>
         </Link>
       </div>
     );
@@ -32,6 +36,7 @@ const getServerSideProps = CheckAuth(async (ctx: GetServerSidePropsContext) => {
     authorization: ctx.req.headers.authorization,
     accept: ctx.req.headers.accept,
   } as HeadersInit;
+
   const posts = await fetch(url, {
     headers,
   })
