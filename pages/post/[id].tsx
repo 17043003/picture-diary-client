@@ -14,12 +14,12 @@ type PostProp = {
 
 const DetailPostPage: NextPage = ({ post, uri, created, updated }: PostProp) => {
   return post ? (
-    <div>
+    <div className='relative'>
       {uri !== '' && <Image src={uri} alt={post.imageUrls[0] ?? ''} width={120} height={120} />}
-      <h1>{post.title}</h1>
-      <p>{post.body}</p>
-      <p>作成日：{created}</p>
-      <p>更新日：{updated}</p>
+      <h1 className='text-6xl font-bold mx-4 mb-2'>{post.title}</h1>
+      <p className='p-2 mx-4 mb-2 text-lg'>{post.body}</p>
+      <p className='mx-2 mb-1 text-right'>作成日：{created}</p>
+      <p className='mx-2 mb-1 text-right'>更新日：{updated}</p>
     </div>
   ) : (
     <div>記事の取得に失敗しました</div>
