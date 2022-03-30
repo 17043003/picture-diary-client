@@ -15,6 +15,15 @@ const NewPostPage: NextPage = () => {
   const handleChangeBody = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setBody(e.target.value);
   };
+
+  const handleFile = async (event: React.FormEvent<HTMLInputElement>) => {
+    const { files } = event.target as HTMLInputElement;
+    if (files) {
+      setImages(files);
+      const encoded = base64url.encode(Buffer.from(await files[0].arrayBuffer()), 'utf8');
+      setBase64(encoded.replaceAll('_', '/').replaceAll('-', '+'));
+    }
+  };
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     let requestBody: BodyInit = `title=${encodeURIComponent(title)}&body=${encodeURIComponent(
@@ -59,39 +68,47 @@ const NewPostPage: NextPage = () => {
     else alert('日記の保存に失敗しました');
   };
 
-  const handleFile = async (event: React.FormEvent<HTMLInputElement>) => {
-    const { files } = event.target as HTMLInputElement;
-    if (files) {
-      setImages(files);
-      const encoded = base64url.encode(Buffer.from(await files[0].arrayBuffer()), 'utf8');
-      setBase64(encoded.replaceAll('_', '/').replaceAll('-', '+'));
-    }
-  };
-
   return (
     <div>
-      <main>
-        <h1>日記作成</h1>
-        <form onSubmit={handleSubmit}>
-          <label htmlFor='title'>
-            <input type='text' name='title' id='input_title' onChange={handleChangeTitle} />
+      <h1 className='text-4xl m-4'>日記作成</h1>
+      <form onSubmit={handleSubmit}>
+        <img src={`data:image/jpeg;base64,${base64}`} alt='' />
+        <div className='mx-2'>
+          <label htmlFor='title' className='block text-lg'>
+            タイトル
           </label>
-          <label htmlFor='body'>
-            <textarea
-              name='body'
-              id='input_body'
-              onChange={handleChangeBody}
-              cols={90}
-              rows={10}
-            ></textarea>
+          <input
+            type='text'
+            name='title'
+            id='input_title'
+            onChange={handleChangeTitle}
+            className='border-gray-300 shadow-md px-2 py-1 mb-4'
+          />
+        </div>
+        <div className='mx-2'>
+          <label htmlFor='body' className='block text-lg'>
+            本文
           </label>
+          <textarea
+            name='body'
+            id='input_body'
+            onChange={handleChangeBody}
+            cols={90}
+            rows={10}
+            className='border-gray-300 shadow-md px-2 py-1 mb-4'
+          ></textarea>
+        </div>
+        <div className='mx-2'>
           <label htmlFor='image'>
             <input type='file' onChange={handleFile} />
           </label>
-          <img src={`data:image/jpeg;base64,${base64}`} alt='' />
-          <input type='submit' value='save' />
-        </form>
-      </main>
+        </div>
+        <input
+          type='submit'
+          value='save'
+          className='text-2xl font-bold bg-lime-200 rounded-lg px-2 py-1 mx-1 my-2 hover:bg-lime-400 cursor-pointer'
+        />
+      </form>
     </div>
   );
 };
