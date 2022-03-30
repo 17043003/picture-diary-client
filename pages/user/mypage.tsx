@@ -7,7 +7,9 @@ import axios from 'axios';
 const MyPage: NextPage = ({ user }: { user: User }) => {
   return (
     <div>
-      <h1 className='text-4xl font-bold mb-4 px-10 pt-4 pb-8 bg-gradient-to-r from-lime-200 to-lime-400'>マイページ</h1>
+      <h1 className='text-4xl font-bold mb-4 px-10 pt-4 pb-8 bg-gradient-to-r from-lime-200 to-lime-400'>
+        マイページ
+      </h1>
       <div className='underline mb-4'>
         <span className='text-4xl ml-6 mr-4'>Name:</span>
         <span className='text-4xl font-bold'>{user.name}</span>
@@ -19,13 +21,17 @@ const MyPage: NextPage = ({ user }: { user: User }) => {
 
       <div className='mx-2 my-4'>
         <Link href='/post'>
-          <a className='text-2xl font-bold text-red-700 bg-lime-200 rounded-lg p-2 hover:bg-lime-400'>日記一覧</a>
+          <a className='text-2xl font-bold text-red-700 bg-lime-200 rounded-lg p-2 hover:bg-lime-400'>
+            日記一覧
+          </a>
         </Link>
       </div>
 
       <div className='mx-2 mt-6'>
         <Link href='/post/new'>
-          <a className='text-2xl font-bold text-violet-700 bg-lime-200 rounded-lg p-2 hover:bg-lime-400'>日記作成</a>
+          <a className='text-2xl font-bold text-violet-700 bg-lime-200 rounded-lg p-2 hover:bg-lime-400'>
+            日記作成
+          </a>
         </Link>
       </div>
     </div>
