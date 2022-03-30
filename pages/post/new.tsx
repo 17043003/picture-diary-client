@@ -1,6 +1,7 @@
 import type { NextPage } from 'next';
 import type { NextApiResponse } from 'next';
 import { useState } from 'react';
+import { useRouter } from 'next/router';
 import base64url from 'base64url';
 
 const NewPostPage: NextPage = () => {
@@ -8,6 +9,8 @@ const NewPostPage: NextPage = () => {
   const [body, setBody] = useState('');
   const [images, setImages] = useState<FileList>();
   const [base64, setBase64] = useState('');
+
+  const router = useRouter();
 
   const handleChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
@@ -64,7 +67,11 @@ const NewPostPage: NextPage = () => {
     })
       .then((v) => v.json())
       .catch(() => null);
-    if (data?.status === '200') alert('日記を保存しました');
+    if (data?.status === '200') {
+        alert('日記を保存しました');
+        // redirect
+        router.push('/post');
+    }
     else alert('日記の保存に失敗しました');
   };
 
