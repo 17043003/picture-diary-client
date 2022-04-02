@@ -4,7 +4,11 @@ import Link from 'next/link';
 import { User } from '../../util/user';
 import axios from 'axios';
 
-const MyPage: NextPage = ({ user }: { user: User }) => {
+type MypageProp = {
+  user: User;
+};
+
+const MyPage: NextPage<MypageProp> = ({ user }) => {
   return (
     <div>
       <h1 className='text-4xl font-bold mb-4 px-10 pt-4 pb-8 bg-gradient-to-r from-lime-200 to-lime-400'>
@@ -38,7 +42,7 @@ const MyPage: NextPage = ({ user }: { user: User }) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
+export const getServerSideProps: GetServerSideProps<MypageProp> = async (context) => {
   const headers = {
     Accept: 'application/json',
     Authorization: `Bearer ${context.req.cookies.token}`,

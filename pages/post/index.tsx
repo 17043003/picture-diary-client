@@ -4,7 +4,11 @@ import Link from 'next/link';
 import { Post } from '../../util/post';
 import CheckAuth from '../../util/checkAuth';
 
-const IndexPostPage: NextPage = ({ posts }: { posts: Post[] }) => {
+type PostsProp = {
+  posts: Post[];
+};
+
+const IndexPostPage: NextPage<PostsProp> = ({ posts }) => {
   const postElements = posts?.map((post) => {
     return (
       <div key={post.id}>
@@ -25,9 +29,9 @@ const IndexPostPage: NextPage = ({ posts }: { posts: Post[] }) => {
         </Link>
       </div>
     );
-  }) ?? <div>記事がありません</div>;
+  });
 
-  return (
+  return posts ? (
     <div>
       <div className='mx-2 mt-6'>
         <Link href='/post/new'>
@@ -38,6 +42,8 @@ const IndexPostPage: NextPage = ({ posts }: { posts: Post[] }) => {
       </div>
       {postElements}
     </div>
+  ) : (
+    <div>記事がありません</div>
   );
 };
 

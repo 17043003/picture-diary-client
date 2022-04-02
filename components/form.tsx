@@ -1,20 +1,19 @@
 import React from 'react';
-import type { NextPage } from 'next';
-import type { NextApiResponse } from 'next';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import base64url from 'base64url';
-import { Post } from '../util/post';
 
-export type PostFormProps = Post & {
+export type PostFormProps = {
   pageTitle: string;
+  title: string;
+  body: string;
   id: number;
   method: 'POST' | 'PUT';
 };
 
 const Form: React.FC<PostFormProps> = (props) => {
-  const [title, setTitle] = useState(props.title);
-  const [body, setBody] = useState(props.body);
+  const [title, setTitle] = useState(props.title ?? '');
+  const [body, setBody] = useState(props.body ?? '');
   const [images, setImages] = useState<FileList>();
   const [base64, setBase64] = useState('');
 
@@ -62,14 +61,14 @@ const Form: React.FC<PostFormProps> = (props) => {
           return;
         }
         Key = (await response?.json())?.Key;
-        alert(Key)
+        alert(Key);
       }
     }
 
     if (Key) {
       requestBody += `&imageUrl=${encodeURIComponent(Key)}`;
     }
-    alert(requestBody)
+    alert(requestBody);
     const data = await fetch(process.env.NEXT_PUBLIC_FRONT_BASEURL + '/api/post', {
       method: props.method,
       body: requestBody,

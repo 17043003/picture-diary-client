@@ -1,12 +1,8 @@
 import type { NextPage, GetServerSidePropsContext } from 'next';
-import type { NextApiResponse } from 'next';
-import { useState } from 'react';
-import { useRouter } from 'next/router';
-import base64url from 'base64url';
 import Form, { PostFormProps } from '../../../components/form';
 import CheckAuth from '../../../util/checkAuth';
 
-const EditPostPage: NextPage = ({ id, title, body }) => {
+const EditPostPage: NextPage<PostFormProps> = ({ id, title, body }) => {
   const props: PostFormProps = {
     pageTitle: '日記更新',
     title,

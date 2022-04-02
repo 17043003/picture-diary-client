@@ -25,7 +25,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     case 'PUT': {
-      const result = /id=([\d])/.exec(req.body)
+      const result = /id=([\d])/.exec(req.body);
       const postID = result?.[1];
       const data = await fetch(`${baseUrl}/api/post/${postID}`, {
         method: req.method,
