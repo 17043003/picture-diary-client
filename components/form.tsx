@@ -4,15 +4,17 @@ import type { NextApiResponse } from 'next';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import base64url from 'base64url';
+import { Post } from '../util/post';
 
-type Props = {
-  propTitle: string;
-  propBody: string;
+export type PostFormProps = Post & {
+  pageTitle: string;
+  id: number;
+  method: 'POST' | 'PUT';
 };
 
-const Form: React.FC<Props> = ({ propTitle, propBody }) => {
-  const [title, setTitle] = useState(propTitle);
-  const [body, setBody] = useState(propBody);
+const Form: React.FC<PostFormProps> = (props) => {
+  const [title, setTitle] = useState(props.title);
+  const [body, setBody] = useState(props.body);
   const [images, setImages] = useState<FileList>();
   const [base64, setBase64] = useState('');
 
@@ -37,7 +39,7 @@ const Form: React.FC<Props> = ({ propTitle, propBody }) => {
     event.preventDefault();
     let requestBody: BodyInit = `title=${encodeURIComponent(title)}&body=${encodeURIComponent(
       body,
-    )}`;
+    )}&id=${props.id}`;
 
     // upload image
     let Key: string | null = null;
@@ -60,15 +62,16 @@ const Form: React.FC<Props> = ({ propTitle, propBody }) => {
           return;
         }
         Key = (await response?.json())?.Key;
-        alert(Key);
+        alert(Key)
       }
     }
 
     if (Key) {
       requestBody += `&imageUrl=${encodeURIComponent(Key)}`;
     }
+    alert(requestBody)
     const data = await fetch(process.env.NEXT_PUBLIC_FRONT_BASEURL + '/api/post', {
-      method: 'POST',
+      method: props.method,
       body: requestBody,
     })
       .then((v) => v.json())
@@ -76,12 +79,12 @@ const Form: React.FC<Props> = ({ propTitle, propBody }) => {
     if (data?.status === '200') {
       alert('日記を保存しました');
       // redirect
-      router.push('/post');
+      router.push(`/post/${data.id}`);
     } else alert('日記の保存に失敗しました');
   };
   return (
     <div>
-      <h1 className='text-4xl m-4'>日記作成</h1>
+      <h1 className='text-4xl m-4'>{props.pageTitle}</h1>
       <form onSubmit={handleSubmit}>
         <img src={`data:image/jpeg;base64,${base64}`} alt='' />
         <div className='mx-2'>
@@ -92,6 +95,7 @@ const Form: React.FC<Props> = ({ propTitle, propBody }) => {
             type='text'
             name='title'
             id='input_title'
+            value={title}
             onChange={handleChangeTitle}
             className='border-gray-300 shadow-md px-2 py-1 mb-4'
           />
@@ -103,6 +107,7 @@ const Form: React.FC<Props> = ({ propTitle, propBody }) => {
           <textarea
             name='body'
             id='input_body'
+            value={body}
             onChange={handleChangeBody}
             cols={90}
             rows={10}
