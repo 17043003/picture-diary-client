@@ -1,11 +1,19 @@
 import type { NextPage } from 'next';
-import { useState } from 'react';
-import { setCookie } from 'nookies';
+import { useState, useEffect } from 'react';
+import { setCookie, parseCookies } from 'nookies';
 import { useRouter } from 'next/router';
 
 const Login: NextPage = () => {
   const [email, setEmail] = useState('');
   const router = useRouter();
+
+  useEffect(() => {
+    const cookies = parseCookies();
+    if (cookies['token']) {
+      router.replace('/user/mypage');
+    }
+  }, []);
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const body: BodyInit = `email=${encodeURI(email)}`;
@@ -19,13 +27,14 @@ const Login: NextPage = () => {
       body,
     }).then((v) => v.json());
 
+    const expireMinutes = 60;
     setCookie(null, 'token', jwt?.token, {
-      maxAge: 30 * 24 * 60 * 60,
+      maxAge: expireMinutes * 60,
       path: '/',
     });
 
     if (jwt) {
-      router.push('/user/mypage');
+      router.replace('/user/mypage');
     }
   };
   const changeEmail = (event: React.ChangeEvent<HTMLInputElement>) => {

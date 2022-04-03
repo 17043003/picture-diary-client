@@ -10,7 +10,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     const cookies = parseCookies();
     if (!cookies['token']) router.push('/login');
     return () => {};
-  }, []);
+  });
   return <Component {...pageProps} />;
 }
 
