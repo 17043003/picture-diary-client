@@ -40,5 +40,22 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       res.status(200).json(response);
       break;
     }
+
+    case 'DELETE': {
+      const result = /id=([\d])/.exec(req.body);
+      const postID = result?.[1];
+      const data = await fetch(`${baseUrl}/api/post/${postID}`, {
+        method: req.method,
+        headers,
+        body: req.body,
+      }).catch(() => null);
+      if (data === null) {
+        res.status(500);
+        return;
+      }
+      const response = await data.json();
+      res.status(200).json(response);
+      break;
+    }
   }
 }

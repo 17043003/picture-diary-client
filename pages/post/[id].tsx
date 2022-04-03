@@ -5,6 +5,8 @@ import { downloadImage } from '../../util/fetcher';
 import { Post } from '../../util/post';
 import blobToURI from '../../util/blobToURI';
 import CheckAuth from '../../util/checkAuth';
+import Button from '../../components/button';
+import { useRouter } from 'next/router';
 
 type PostProp = {
   id: number;
@@ -15,6 +17,21 @@ type PostProp = {
 };
 
 const DetailPostPage: NextPage<PostProp> = ({ post, uri, created, updated }) => {
+  const router = useRouter();
+  const deleteHandler = async () => {
+    const data = await fetch(process.env.NEXT_PUBLIC_FRONT_BASEURL + '/api/post', {
+      method: 'DELETE',
+      body: `id=${post.id}`,
+    })
+      .then((v) => v.json())
+      .catch(() => null);
+    if (data?.status === '200') {
+      alert('日記を削除しました');
+      // redirect
+      router.push(`/post`);
+    } else alert('日記の削除に失敗しました');
+  };
+
   return post ? (
     <div className='relative'>
       {uri !== '' && <Image src={uri} alt={post.imageUrls[0] ?? ''} width={120} height={120} />}
@@ -25,6 +42,7 @@ const DetailPostPage: NextPage<PostProp> = ({ post, uri, created, updated }) => 
           編集
         </a>
       </Link>
+      <Button buttonName={'削除'} clickHandler={deleteHandler} />
       <p className='mx-2 mb-1 text-right'>作成日：{created}</p>
       <p className='mx-2 mb-1 text-right'>更新日：{updated}</p>
     </div>
