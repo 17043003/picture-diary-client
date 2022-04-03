@@ -36,7 +36,7 @@ const DetailPostPage: NextPage<PostProp> = ({ post, uri, created, updated }) => 
     <div className='relative'>
       {uri !== '' && <Image src={uri} alt={post.imageUrls[0] ?? ''} width={120} height={120} />}
       <h1 className='text-6xl font-bold mx-4 mb-2'>{post.title}</h1>
-      <p className='p-2 mx-4 mb-2 text-lg'>{post.body}</p>
+      <p className='p-2 mx-4 mb-2 text-lg break-words whitespace-pre-wrap'>{post.body}</p>
       <Link href={`/post/edit/${post.id}`}>
         <a className='text-2xl font-bold text-violet-700 bg-lime-200 rounded-lg p-2 hover:bg-lime-400'>
           編集
