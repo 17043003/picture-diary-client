@@ -5,12 +5,15 @@ import { postFetcher } from '../../util/fetcher';
 const NewUserPage: NextPage = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const submitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const res = await postFetcher(
       '/api/user',
-      `name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}`,
+      `name=${encodeURIComponent(name)}&email=${encodeURIComponent(
+        email,
+      )}&password=${encodeURIComponent(password)}`,
     ).catch(() => ({ status: '500' }));
 
     if (res.status === '200') {
@@ -28,6 +31,10 @@ const NewUserPage: NextPage = () => {
     setEmail(e.target.value);
   };
 
+  const passwordHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(e.target.value);
+  };
+
   return (
     <div>
       <h1>新規ユーザ作成</h1>
@@ -42,6 +49,12 @@ const NewUserPage: NextPage = () => {
           <label htmlFor='email'>
             メールアドレス：
             <input type='text' onChange={emailHandler} placeholder='xxxxxx@xxxx.co.jp' />
+          </label>
+        </div>
+        <div>
+          <label htmlFor='password'>
+            パスワード：
+            <input type='password' onChange={passwordHandler} />
           </label>
         </div>
         <div>
