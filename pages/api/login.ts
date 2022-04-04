@@ -14,7 +14,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   const data = await fetch(`${baseUrl}/login`, {
     method: 'POST',
     headers,
-    body: `email=${req.body.email}`,
+    body: `email=${req.body.email}&password=${req.body.password}`,
   });
   const { token } = await data.json();
   res.status(200).json({ token });

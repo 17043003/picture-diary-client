@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 
 const Login: NextPage = () => {
   const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const router = useRouter();
 
   useEffect(() => {
@@ -16,7 +17,7 @@ const Login: NextPage = () => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const body: BodyInit = `email=${encodeURI(email)}`;
+    const body: BodyInit = `email=${encodeURI(email)}&password=${encodeURI(password)}`;
     const headers = {
       Accept: 'application/x-www-form-urlencoded',
       'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
@@ -40,6 +41,11 @@ const Login: NextPage = () => {
   const changeEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
   };
+
+  const changePassword = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(event.target.value);
+  };
+
   return (
     <div>
       <h1 className='font-bold text-4xl p-10 bg-gradient-to-r from-lime-200 to-lime-400'>
@@ -53,7 +59,20 @@ const Login: NextPage = () => {
           <input
             type='email'
             name='email'
+            value={email}
             onChange={changeEmail}
+            className='focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300 shadow-md px-2 py-1'
+          />
+        </div>
+        <div className='flex rounded-md'>
+          <label htmlFor='password' className='font-bold underline'>
+            パスワード：
+          </label>
+          <input
+            type='password'
+            name='password'
+            value={password}
+            onChange={changePassword}
             className='focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300 shadow-md px-2 py-1'
           />
         </div>
