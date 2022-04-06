@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import Button, { ButtonProps } from '../components/button';
-import { destroyCookie } from 'nookies';
+import { parseCookies, destroyCookie } from 'nookies';
 import { useRouter } from 'next/router';
 
 export type HeaderProps = {
@@ -28,12 +28,14 @@ const Header: React.FC<HeaderProps> = ({ elements }) => {
   });
 
   const router = useRouter();
+  const cookies = parseCookies();
   const clickHandler = async () => {
-    if (confirm('ログアウトしますか？')) {
+    if (!!cookies['token'] && confirm('ログアウトしますか？')) {
       destroyCookie(null, 'token');
       router.push('/login');
     }
   };
+
   const buttonProps: ButtonProps = {
     buttonName: 'LOGOUT',
     bgColor: '',
