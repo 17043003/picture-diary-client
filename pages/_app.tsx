@@ -28,8 +28,14 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <>
+    <div className="flex flex-col">
+      <div className="top-0 sticky overflow-visible z-10">
       <Header elements={elements} />
+      </div>
+      <div className="grow">
       <Component {...pageProps} />
+      </div>
+      </div>
     </>
   );
 }
