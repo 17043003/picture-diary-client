@@ -25,6 +25,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     { name: 'MYPAGE', path: '/user/mypage' },
     loggedIn ? { name: 'LOGOUT', path: '' } : { name: 'LOGIN', path: '/login' },
   ];
+
   return (
     <>
       <Header elements={elements} />

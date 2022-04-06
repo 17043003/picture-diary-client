@@ -1,4 +1,7 @@
 import Link from 'next/link';
+import Button, { ButtonProps } from '../components/button';
+import { destroyCookie } from 'nookies';
+import { useRouter } from 'next/router';
 
 export type HeaderProps = {
   elements: navElement[];
@@ -23,6 +26,20 @@ const Header: React.FC<HeaderProps> = ({ elements }) => {
       </>
     );
   });
+
+  const router = useRouter();
+  const clickHandler = async () => {
+    if (confirm('ログアウトしますか？')) {
+      destroyCookie(null, 'token');
+      router.push('/login');
+    }
+  };
+  const buttonProps: ButtonProps = {
+    buttonName: 'LOGOUT',
+    bgColor: '',
+    textColor: 'black',
+    clickHandler,
+  };
   return (
     <>
       <div className='w-full pt-3 shadow-[0_0_10px_1px_rgba(0,0,0,0.3)] bg-amber-100'>
@@ -31,6 +48,9 @@ const Header: React.FC<HeaderProps> = ({ elements }) => {
             <a className='w-full h-full'>Picture Diary</a>
           </Link>
         </h1>
+        <div className='w-1/4 h-full text-right mx-auto mr-0'>
+          <Button {...buttonProps}></Button>
+        </div>
         <nav>
           <ul className='text-center'>{listElements}</ul>
         </nav>
