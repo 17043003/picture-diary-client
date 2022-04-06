@@ -42,7 +42,12 @@ const DetailPostPage: NextPage<PostProp> = ({ post, uri, created, updated }) => 
           編集
         </a>
       </Link>
-      <Button buttonName={'削除'} clickHandler={deleteHandler} />
+      <Button
+        buttonName={'削除'}
+        bgColor={'red'}
+        textColor={'violet'}
+        clickHandler={deleteHandler}
+      />
       <p className='mx-2 mb-1 text-right'>作成日：{created}</p>
       <p className='mx-2 mb-1 text-right'>更新日：{updated}</p>
     </div>
