@@ -41,13 +41,17 @@ const Form: React.FC<PostFormProps> = (props) => {
     )}&id=${props.id}`;
 
     // upload image
+    const now = new Date();
+    const keyTime = `${now.getFullYear()}${
+      now.getMonth() + 1
+    }${now.getDate()}${now.getHours()}${now.getMinutes()}${now.getSeconds()}`;
     let Key: string | null = null;
     if (images) {
       if (images.length !== 0) {
         const headers = {
           Accept: 'application/json',
           'Content-Type': images[0].type,
-          'Key-Name': images[0].name,
+          'Key-Name': `${keyTime}/${images[0].name}`,
         };
 
         const response = await fetch(process.env.NEXT_PUBLIC_FRONT_BASEURL + '/api/image', {
