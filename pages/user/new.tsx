@@ -37,28 +37,45 @@ const NewUserPage: NextPage = () => {
 
   return (
     <div>
-      <h1>新規ユーザ作成</h1>
+      <h1 className='text-4xl font-bold m-4'>新規ユーザ作成</h1>
       <form onSubmit={submitHandler}>
-        <div>
-          <label htmlFor='name'>
+        <div className='flex ml-6 mb-4'>
+          <label htmlFor='name' className='flex-none w-32 text-right'>
             名前：
-            <input type='text' onChange={nameHandler} />
           </label>
+          <input
+            type='text'
+            onChange={nameHandler}
+            className='border-gray-300 shadow-md px-2 py-1 mb-4 flex-none w-64'
+          />
         </div>
-        <div>
-          <label htmlFor='email'>
+        <div className='flex ml-6 mb-4'>
+          <label htmlFor='email' className='flex-none w-32 text-right'>
             メールアドレス：
-            <input type='text' onChange={emailHandler} placeholder='xxxxxx@xxxx.co.jp' />
           </label>
+          <input
+            type='text'
+            onChange={emailHandler}
+            placeholder='xxxxxx@xxxx.co.jp'
+            className='border-gray-300 shadow-md px-2 py-1 mb-4 flex-none w-64'
+          />
         </div>
-        <div>
-          <label htmlFor='password'>
+        <div className='flex ml-6 mb-4'>
+          <label htmlFor='password' className='flex-none w-32 text-right'>
             パスワード：
-            <input type='password' onChange={passwordHandler} />
           </label>
+          <input
+            type='password'
+            onChange={passwordHandler}
+            className='border-gray-300 shadow-md px-2 py-1 mb-4 flex-none w-64'
+          />
         </div>
         <div>
-          <input type='submit' value='登録' />
+          <input
+            type='submit'
+            value='登録'
+            className='text-2xl font-bold bg-red-200 rounded-lg px-2 py-1 mx-6 my-2 hover:bg-red-400 cursor-pointer'
+          />
         </div>
       </form>
     </div>
