@@ -15,9 +15,14 @@ const Home: NextPage = () => {
 
       <main className={styles.main}>
         <h1 className={styles.title}>Welcome to 絵日記</h1>
-        <Link href='/post/new'>
+        <Link href='/login'>
           <a className={styles.card}>
-            <h2>日記を書く &rarr;</h2>
+            <h2>ログイン Login &rarr;</h2>
+          </a>
+        </Link>
+        <Link href='/user/new'>
+          <a className={styles.card}>
+            <h2>登録 Sign up &rarr;</h2>
           </a>
         </Link>
       </main>
