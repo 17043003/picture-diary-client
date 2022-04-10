@@ -21,7 +21,7 @@ const DetailPostPage: NextPage<PostProp> = ({ post, uri, created, updated }) => 
   const deleteHandler = async () => {
     const data = await fetch(process.env.NEXT_PUBLIC_FRONT_BASEURL + '/api/post', {
       method: 'DELETE',
-      body: `id=${post.id}`,
+      body: `id=${post.id}&uri=${post.imageUrls[0]}`,
     })
       .then((v) => v.json())
       .catch(() => null);
@@ -29,7 +29,9 @@ const DetailPostPage: NextPage<PostProp> = ({ post, uri, created, updated }) => 
       alert('日記を削除しました');
       // redirect
       router.push(`/post`);
-    } else alert('日記の削除に失敗しました');
+    } else {
+      alert('日記の削除に失敗しました');
+    }
   };
 
   return post ? (
