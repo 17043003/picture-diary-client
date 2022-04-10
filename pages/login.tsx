@@ -1,12 +1,16 @@
 import type { NextPage } from 'next';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { setCookie, parseCookies } from 'nookies';
 import { useRouter } from 'next/router';
+import { Path, useForm, UseFormRegister, SubmitHandler } from 'react-hook-form';
 
 const Login: NextPage = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const router = useRouter();
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+  } = useForm<IFormValues>({ criteriaMode: 'all' });
 
   useEffect(() => {
     const cookies = parseCookies();
@@ -15,9 +19,8 @@ const Login: NextPage = () => {
     }
   }, []);
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const body: BodyInit = `email=${encodeURI(email)}&password=${encodeURI(password)}`;
+  const handleFormSubmit: SubmitHandler<IFormValues> = async (data) => {
+    const body: BodyInit = `email=${encodeURI(data.email)}&password=${encodeURI(data.password)}`;
     const headers = {
       Accept: 'application/x-www-form-urlencoded',
       'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
@@ -38,44 +41,17 @@ const Login: NextPage = () => {
       router.replace('/user/mypage');
     }
   };
-  const changeEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(event.target.value);
-  };
-
-  const changePassword = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(event.target.value);
-  };
 
   return (
     <div>
       <h1 className='font-bold text-4xl p-10 bg-gradient-to-r from-lime-200 to-lime-400'>
         ログイン
       </h1>
-      <form onSubmit={handleSubmit} className='mt-10 mx-20'>
-        <div className='flex rounded-md'>
-          <label htmlFor='email' className='font-bold underline'>
-            メールアドレス：
-          </label>
-          <input
-            type='email'
-            name='email'
-            value={email}
-            onChange={changeEmail}
-            className='focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300 shadow-md px-2 py-1'
-          />
-        </div>
-        <div className='flex rounded-md'>
-          <label htmlFor='password' className='font-bold underline'>
-            パスワード：
-          </label>
-          <input
-            type='password'
-            name='password'
-            value={password}
-            onChange={changePassword}
-            className='focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300 shadow-md px-2 py-1'
-          />
-        </div>
+      <form onSubmit={handleSubmit(handleFormSubmit)} className='mt-10 mx-20'>
+        <ErrorText type={errors.email?.type}></ErrorText>
+        <LoginForm label='email' register={register} required></LoginForm>
+        <ErrorText type={errors.password?.type}></ErrorText>
+        <LoginForm label='password' register={register} required></LoginForm>
         <input
           type='submit'
           className='bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-3 mt-4 rounded'
@@ -84,5 +60,31 @@ const Login: NextPage = () => {
     </div>
   );
 };
+
+interface IFormValues {
+  email: string;
+  password: string;
+}
+
+type LoginProps = {
+  label: Path<IFormValues>;
+  register: UseFormRegister<IFormValues>;
+  required: boolean;
+};
+
+const LoginForm = ({ label, register, required }: LoginProps) => (
+  <div className='flex ml-6 mb-4'>
+    <label className='flex-none w-32 text-right font-bold underline'>{label.toUpperCase()}:</label>
+    <input
+      {...register(label, { required })}
+      type={label}
+      className='border-gray-300 shadow-md px-2 py-1 mb-4 flex-none w-64'
+    />
+  </div>
+);
+
+const ErrorText = ({ type }: { type: string | undefined }) => (
+  <p className='ml-40 font-bold text-red-600'>{type === 'required' && '入力が必須です'}</p>
+);
 
 export default Login;
