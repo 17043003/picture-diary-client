@@ -11,15 +11,15 @@ function MyApp({ Component, pageProps }: AppProps) {
   const exceptPath = (path: string): boolean => {
     const paths = ['/', '/login', '/user/new'];
     return paths.includes(path);
-  }
+  };
 
   useEffect(() => {
     const cookies = parseCookies();
 
-    if(!exceptPath(router.pathname) && cookies['token'] == null) {
+    if (!exceptPath(router.pathname) && cookies['token'] == null) {
       router.push('/login');
     }
-  })
+  });
 
   const elements: navElement[] = [
     { name: 'TOP', path: '/' },

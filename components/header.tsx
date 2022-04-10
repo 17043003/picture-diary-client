@@ -1,7 +1,7 @@
 import Link from 'next/link';
-import Button, { ButtonProps } from '../components/button';
-import { parseCookies, destroyCookie } from 'nookies';
 import { useRouter } from 'next/router';
+import Button, { ButtonProps } from '../components/button';
+import logout from '../util/logout';
 
 export type HeaderProps = {
   elements: navElement[];
@@ -28,19 +28,11 @@ const Header: React.FC<HeaderProps> = ({ elements }) => {
   });
 
   const router = useRouter();
-  const cookies = parseCookies();
-  const clickHandler = async () => {
-    if (!!cookies['token'] && confirm('ログアウトしますか？')) {
-      destroyCookie(null, 'token');
-      router.push('/login');
-    }
-  };
-
   const buttonProps: ButtonProps = {
     buttonName: 'LOGOUT',
     bgColor: '',
     textColor: 'black',
-    clickHandler,
+    clickHandler: logout(router),
   };
   return (
     <>
