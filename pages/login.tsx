@@ -25,7 +25,8 @@ const Login: NextPage = () => {
       Accept: 'application/x-www-form-urlencoded',
       'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
     };
-    const jwt = await fetch('http://localhost:3001/api/login', {
+    const url = process.env.NEXT_PUBLIC_FRONT_BASEURL ?? 'http://localhost:3001';
+    const jwt = await fetch(`${url}/api/login`, {
       method: 'POST',
       headers,
       body,
